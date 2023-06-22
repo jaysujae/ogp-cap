@@ -1,0 +1,29 @@
+{{ define "nav" }}
+<!-- ======= Header ======= -->
+<header id="header">
+  <div class="container d-flex align-items-center">
+
+    <h1 class="logo mr-auto"><a href="/">Hackathon</a></h1>
+    <!-- Uncomment below if you prefer to use an image logo -->
+    <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+    <nav class="nav-menu d-none d-lg-block">
+      <ul>
+        {{ if .User }}
+        <li class="drop-down"><a href="">{{ .User.Email }}</a>
+          <ul>
+            <li><a href="/list">List</a></li>
+            <li><a href="/post">Make a Post</a></li>
+            <li><a href="/logout" class="text-danger">logout</a></li>
+          </ul>
+        </li>
+        {{ else }}
+        <li><a href="/login">Login</a></li>
+        {{ end }}
+
+      </ul>
+    </nav><!-- .nav-menu -->
+
+  </div>
+</header><!-- End Header -->
+{{ end }}
