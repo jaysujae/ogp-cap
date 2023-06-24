@@ -1,4 +1,5 @@
 # ChatLah
+ChatLah is a Build for Public Good Prototype aimed at normalizing discourse about one's feelings with combination of AI intervention and peer support to increase the incidence of community mental health first aid
 
 ## DB SETUP
 `docker pull postgres` <br>
