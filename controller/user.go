@@ -11,6 +11,7 @@ import (
 // User defines the shape of a user
 type User struct {
 	us         models.UserService
+	cs         models.ChatService
 	SignUpView *views.Views
 }
 
@@ -19,9 +20,10 @@ type signUpForm struct {
 }
 
 // NewUser returns the User struct
-func NewUser(us models.UserService) *User {
+func NewUser(us models.UserService, cs models.ChatService) *User {
 	return &User{
 		us:         us,
+		cs:         cs,
 		SignUpView: views.NewView("bootstrap", "user/signup"),
 	}
 }
@@ -58,6 +60,19 @@ func (u *User) Register(w http.ResponseWriter, r *http.Request) {
 		u.SignUpView.Render(w, r, vd)
 		return
 	}
+	chats := []models.Chat{
+		{
+			UserID:  user.ID,
+			Content: user.Introduction,
+			Role:    "user",
+		},
+	}
+	_ = u.cs.Create(&models.Chat{
+		UserID:  user.ID,
+		Content: user.Introduction,
+		Role:    "user",
+	})
+	_ = u.cs.Create(chatGPT(&chats))
 	cookie := &http.Cookie{
 		Name:  middleware.BrowserCookieName,
 		Value: fmt.Sprint(user.ID),

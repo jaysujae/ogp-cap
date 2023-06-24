@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -114,10 +113,7 @@ func (pg *postGorm) FindByUserID(id uint) (*[]Chat, error) {
 	result := pg.db.Preload("Comments").Where("user_id = ?", id).Find(&chats)
 
 	if result.Error != nil {
-		// handle error
-		fmt.Println(result.Error)
-	} else {
-		fmt.Println(chats)
+		return nil, result.Error
 	}
 	return &chats, nil
 }

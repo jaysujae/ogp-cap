@@ -1,12 +1,10 @@
 {{ define "signup" }}
 <!-- ======= Contact Section ======= -->
-<section id="contact" class="contact">
-    <div class="container" data-aos="fade-up">
+<section>
+    <div>
         <form action="/signup" method="post" role="form">
-            <div class="form-group">
-                <input type="text" name="introduction" class="form-control" placeholder="introduction"
-                       data-rule="minlen:4" data-msg="Please enter at least 4 chars" required/>
-                <div class="validate"></div>
+            <div>
+                <input type="text" name="introduction" class="form-control" placeholder="Tell me about the problem you have, so that we can understand you more and match you with people with similar problem."/>
             </div>
             <div class="text-center"><button class="btn-primary btn-block" type="submit" style="background: #2487ce;
                         border: 0;

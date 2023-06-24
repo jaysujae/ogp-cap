@@ -35,7 +35,7 @@ func main() {
 	svc.DestroyAndCreate()
 
 	defaultController := controller.New(svc.User, svc.Chat, svc.Comment)
-	userC := controller.NewUser(svc.User)
+	userC := controller.NewUser(svc.User, svc.Chat)
 	postC := controller.NewPost(svc.Chat)
 
 	r := mux.NewRouter()

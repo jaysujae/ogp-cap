@@ -26,7 +26,7 @@ type commentForm struct {
 // New returns the static struct
 func New(us models.UserService, ps models.ChatService, cs models.CommentService) *Controller {
 	return &Controller{
-		HomeView:  views.NewView("bootstrap", "static/home", "user/signup", "layout/list"),
+		HomeView:  views.NewView("bootstrap", "static/home", "user/signup"),
 		GroupView: views.NewView("bootstrap", "user/group"),
 
 		us: us,
@@ -86,5 +86,7 @@ func (c *Controller) Comment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/", http.StatusFound)
+	referer := r.Header.Get("Referer")
+	http.Redirect(w, r, referer, http.StatusFound)
+
 }

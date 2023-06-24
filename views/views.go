@@ -7,9 +7,10 @@ import (
 )
 
 const (
-	fileExt    = ".html"
-	filePrefix = "views/"
-	layOutPath = "views/layout/"
+	fileExt     = ".html"
+	filePrefix  = "views/"
+	layOutPath  = "views/layout/"
+	partialPath = "views/partial/"
 )
 
 // Views defines the shape of the views
@@ -29,6 +30,11 @@ func layOutFiles() []string {
 	if err != nil {
 		panic(err)
 	}
+	partialFiles, err := filepath.Glob(partialPath + "*")
+	if err != nil {
+		panic(err)
+	}
+	files = append(files, partialFiles...)
 	return files
 }
 

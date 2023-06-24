@@ -1,0 +1,55 @@
+{{ define "post_list" }}
+
+<section id="hero" class="d-flex align-items-center">
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="col-md-6 col-lg-7 col-xl-7">
+
+            <ul class="list-unstyled">
+
+
+                {{ range .Yield }}
+
+                <li class="d-flex justify-content-between mb-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between p-3">
+                            <p class="fw-bold mb-0">{{ .ID }}</p>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-0">
+                                {{ .Content }}
+                            </p>
+                        </div>
+                        {{ range .Comments }}
+                        <div class="media text-muted pt-3">
+                            {{ .Content }}
+                        </div>
+                        {{ end }}
+                        <form action="/comment/{{ .ID }}" method="post" role="form">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="content" placeholder="Comment"
+                                           required />
+                                </div>
+                                <div class="text-center"><button class="btn-primary btn-block" type="submit" style="background: #2487ce;
+                        border: 0;
+                        padding: 10px 30px;
+                        color: #fff;
+                        transition: 0.4s;
+                        border-radius: 4px;">Comment</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+
+                {{ end }}
+            </ul>
+
+        </div>
+
+
+
+        </div>
+    </div>
+</section><!-- End Hero -->
+{{ end }}
