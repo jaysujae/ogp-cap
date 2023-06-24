@@ -49,5 +49,5 @@ func NewView(layout string, fileNames ...string) *Views {
 // Render is a function that renders a template
 func (v *Views) Render(w http.ResponseWriter, r *http.Request, data interface{}) {
 	data = SetData(r, data)
-	v.t.ExecuteTemplate(w, v.template, data)
+	_ = v.t.ExecuteTemplate(w, v.template, data)
 }

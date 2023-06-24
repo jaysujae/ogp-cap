@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 import (
 	"context"
@@ -17,7 +17,7 @@ import (
 
 // Post defines the shape of the struct
 type Post struct {
-	ps       models.PostService
+	ps       models.ChatService
 	NewView  *views.Views
 	ListView *views.Views
 }
@@ -27,7 +27,7 @@ type postForm struct {
 }
 
 // NewPost returns the post struct
-func NewPost(ps models.PostService) *Post {
+func NewPost(ps models.ChatService) *Post {
 	return &Post{
 		ps:       ps,
 		NewView:  views.NewView("bootstrap", "post/new"),
@@ -42,8 +42,23 @@ func (p *Post) PostPage(w http.ResponseWriter, r *http.Request) {
 
 // ListPage list all users posts
 func (p *Post) ListPage(w http.ResponseWriter, r *http.Request) {
-	userID := appcontext.GetUserFromContext(r).ID
-	posts, err := p.ps.FindByUserID(userID)
+	pd := &views.Data{}
+	vars := mux.Vars(r)
+	id := vars["id"]
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		return
+	}
+	uID := uint(idInt)
+	posts, err := p.ps.FindByUserID(uID)
+	if err != nil {
+		pd.Alert = &views.Alert{
+			Type:    "danger",
+			Message: err.Error(),
+		}
+		p.ListView.Render(w, r, pd)
+		return
+	}
 	if err != nil {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
@@ -56,30 +71,30 @@ func (p *Post) HandlePost(w http.ResponseWriter, r *http.Request) {
 	form := &postForm{}
 	ParseForm(r, form)
 	userID := appcontext.GetUserFromContext(r).ID
-	post := &models.Post{
-		UserID: userID,
-		Post:   form.Post,
-	}
-	posts, err := p.ps.FindByUserID(userID)
-	if err != nil {
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
+	post := &models.Chat{
+		UserID:  userID,
+		Content: form.Post,
+		Role:    "user",
 	}
 
 	if err := p.ps.Create(post); err != nil {
 		http.Redirect(w, r, "/post", http.StatusFound)
 		return
 	}
-
+	posts, err := p.ps.FindByUserID(userID)
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
 	chatGPTResponse := chatGPT(posts)
 	if err := p.ps.Create(chatGPTResponse); err != nil {
 		http.Redirect(w, r, "/post", http.StatusFound)
 		return
 	}
-	http.Redirect(w, r, "/list", http.StatusFound)
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func chatGPT(posts *[]models.Post) *models.Post {
+func chatGPT(posts *[]models.Chat) *models.Chat {
 	godotenv.Load()
 
 	apiKey := os.Getenv("API_KEY")
@@ -98,8 +113,8 @@ func chatGPT(posts *[]models.Post) *models.Post {
 	}
 	for _, post := range *posts {
 		messages = append(messages, gpt3.ChatCompletionRequestMessage{
-			Role:    "user",
-			Content: post.Post,
+			Role:    post.Role,
+			Content: post.Content,
 		})
 	}
 
@@ -111,9 +126,10 @@ func chatGPT(posts *[]models.Post) *models.Post {
 		log.Fatalln(err)
 	}
 
-	return &models.Post{
-		UserID: 1,
-		Post:   resp.Choices[0].Message.Content,
+	return &models.Chat{
+		UserID:  (*posts)[0].UserID,
+		Content: resp.Choices[0].Message.Content,
+		Role:    "assistant",
 	}
 }
 
