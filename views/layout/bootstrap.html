@@ -18,13 +18,19 @@
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
         rel="stylesheet">
     
+    <link href='https://fonts.googleapis.com/css?family=Sansita One' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
-
+<style>
+    body {
+        background: linear-gradient(149deg, #8EB9D1 0%, #FFE5FF 100%);
+    }
+</style>
 <body>
-    {{ template "nav" .}}
     {{ if .Alert }}
     {{ template "alert" .Alert }}
     {{ end }}
