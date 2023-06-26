@@ -4,10 +4,14 @@ export default function ChatBar() {
   const [message, setMessage] = useState("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(message);
     setMessage(event.target.value);
   };
 
-  const onSendBtnClicked = () => {};
+  const onSendBtnClicked = () => {
+    console.log(message);
+    setMessage("");
+  };
 
   return (
     <div className={"sticky bottom-0 bg-gray-200 py-2 px-8 rounded-3xl"}>
@@ -26,7 +30,7 @@ export default function ChatBar() {
             ? "px-4 py-2 bg-red-100 text-white rounded-r-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             : "px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         }
-        onSubmit={onSendBtnClicked}
+        onClick={onSendBtnClicked}
         disabled={message.trim().length === 0}
       >
         Send
