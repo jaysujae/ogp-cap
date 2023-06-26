@@ -12,6 +12,7 @@ type User struct {
 	Nickname     string
 	Introduction string `gorm:"not null"`
 	Chats        []Chat
+	Comments     []Comment
 }
 
 // UserDB defines all methods of the user service
