@@ -3,12 +3,15 @@ package models
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
+	"math/rand"
 )
 
 // User defines the shape of the user table in the database
 type User struct {
 	gorm.Model
+	Nickname     string
 	Introduction string `gorm:"not null"`
+	Chats        []Chat
 }
 
 // UserDB defines all methods of the user service
@@ -56,6 +59,33 @@ func NewUserService(db *gorm.DB) UserService {
 }
 
 func (ug *userGorm) Create(user *User) error {
+	adjectives := []string{
+		"Happy",
+		"Bright",
+		"Jolly",
+		"Kind",
+		"Brave",
+		"Cool",
+		"Wise",
+		"Calm",
+		"Bold",
+		"Fit",
+	}
+	animals := []string{
+		"Panda",
+		"Merlion",
+		"Lion",
+		"Dolphin",
+		"Peacock",
+		"Eagle",
+		"Koala",
+		"Tiger",
+		"Flamingo",
+		"Giraffe",
+	}
+	adjRand := rand.Intn(10)
+	nameRand := rand.Intn(10)
+	user.Nickname = adjectives[adjRand] + " " + animals[nameRand]
 	return ug.db.Create(&user).Error
 }
 

@@ -16,6 +16,7 @@ var (
 type Chat struct {
 	gorm.Model
 	UserID   uint   `gorm:"not null"`
+	User     User   `gorm:"foreignKey:UserID"`
 	Content  string `gorm:"not null"`
 	Role     string `gorm:"not null"`
 	Comments []Comment
@@ -106,11 +107,12 @@ func (pg *postGorm) Create(post *Chat) error {
 
 func (pg *postGorm) FindByUserID(id uint) (*[]Chat, error) {
 	var chats []Chat
-	result := pg.db.Preload("Comments").Where("user_id = ?", id).Find(&chats)
+	result := pg.db.Preload("Comments").Preload("User").Where("user_id = ?", id).Find(&chats)
 
 	if result.Error != nil {
 		return nil, result.Error
 	}
+
 	return &chats, nil
 }
 
