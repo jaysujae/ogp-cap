@@ -39,11 +39,6 @@ func (u *User) LogOut(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-// SignUp handles the /signup GET
-func (u *User) SignUp(w http.ResponseWriter, r *http.Request) {
-	u.SignUpView.Render(w, r, nil)
-}
-
 // Register handles the /signup POST
 func (u *User) Register(w http.ResponseWriter, r *http.Request) {
 	form := signUpForm{}
@@ -96,9 +91,4 @@ func (u *User) CookieTest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "%+v", user)
-}
-
-// Protected is a test route for middleware
-func (u *User) Protected(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "User is logged in")
 }

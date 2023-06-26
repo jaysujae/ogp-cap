@@ -35,7 +35,6 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", defaultController.Home)
-	r.HandleFunc("/group", requireUserMW.RequireUserMiddleWare(defaultController.Group)).Methods("GET")
 
 	r.HandleFunc("/signup", userC.Register).Methods("POST")
 	r.HandleFunc("/logout", userC.LogOut).Methods("GET")

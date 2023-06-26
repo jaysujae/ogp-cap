@@ -14,9 +14,9 @@ type Controller struct {
 	HomeView  *views.Views
 	GroupView *views.Views
 
-	us models.UserService
-	ps models.ChatService
-	cs models.CommentService
+	us          models.UserService
+	chatService models.ChatService
+	cs          models.CommentService
 }
 
 type commentForm struct {
@@ -29,9 +29,9 @@ func New(us models.UserService, ps models.ChatService, cs models.CommentService)
 		HomeView:  views.NewView("bootstrap", "static/home", "user/signup"),
 		GroupView: views.NewView("bootstrap", "user/group"),
 
-		us: us,
-		ps: ps,
-		cs: cs,
+		us:          us,
+		chatService: ps,
+		cs:          cs,
 	}
 }
 
@@ -43,12 +43,24 @@ func (c *Controller) Home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	userID := user.ID
-	posts, err := c.ps.FindByUserID(userID)
+	chats, err := c.chatService.FindByUserID(userID)
 	if err != nil {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	c.HomeView.Render(w, r, posts)
+	companions, err := c.us.GetGroupUsersByID(userID)
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+	data := struct {
+		Chats      *[]models.Chat
+		Companions *[]models.User
+	}{
+		Chats:      chats,
+		Companions: companions,
+	}
+	c.HomeView.Render(w, r, data)
 }
 
 // Group shows a group of people similar to the user
