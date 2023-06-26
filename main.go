@@ -12,14 +12,7 @@ import (
 	"os"
 )
 
-const (
-	host       = "localhost"
-	port       = 5455
-	user       = "postgresUser"
-	dbname     = "postgresDB"
-	password   = "postgresPW"
-	serverPort = "3000"
-)
+const serverPort = "3000"
 
 func main() {
 	godotenv.Load()
@@ -33,6 +26,7 @@ func main() {
 	}
 	defer svc.Close()
 	svc.AutoMigrate()
+	// reset db
 	svc.DestroyAndCreate()
 
 	defaultController := controller.New(svc.User, svc.Chat, svc.Comment)
