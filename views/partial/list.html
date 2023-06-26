@@ -76,6 +76,35 @@
                       <p class="mb-0">
                         {{ .Content }}
                       </p>
+                      <div class="d-flex justify-content-center row">
+                        <div class="col-md-8">
+                          <div class="d-flex flex-column comment-section">
+                            {{ range .Comments }}
+                            <div class="p-2">
+                              <div class="d-flex flex-row user-info"><img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">
+                                <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">Marry Andrews</span></div>
+                              </div>
+                              <div class="mt-2">
+                                <p class="comment-text">{{ .Content }}</p>
+                              </div>
+                            </div>
+                            {{ end }}
+
+                            <form action="/comment/{{ .ID }}" method="post">
+                              <div class="p-2">
+                                <div class="d-flex flex-row align-items-start">
+                                  <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">
+                                  <textarea name="content" class="form-control ml-1 shadow-none textarea"></textarea>
+                                </div>
+                                <div class="mt-2 text-right">
+                                  <button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </li>
@@ -91,6 +120,35 @@
                       <p class="mb-0">
                         {{ .Content }}
                       </p>
+                      <div class="d-flex justify-content-center row">
+                        <div class="col-md-8">
+                          <div class="d-flex flex-column comment-section">
+                            {{ range .Comments }}
+                            <div class="p-2">
+                              <div class="d-flex flex-row user-info"><img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">
+                                <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">Marry Andrews</span></div>
+                              </div>
+                              <div class="mt-2">
+                                <p class="comment-text">{{ .Content }}</p>
+                              </div>
+                            </div>
+                            {{ end }}
+
+                            <form action="/comment/{{ .ID }}" method="post">
+                              <div class="p-2">
+                                <div class="d-flex flex-row align-items-start">
+                                  <img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40">
+                                  <textarea name="content" class="form-control ml-1 shadow-none textarea"></textarea>
+                                </div>
+                                <div class="mt-2 text-right">
+                                  <button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                   <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
