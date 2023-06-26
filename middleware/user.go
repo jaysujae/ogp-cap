@@ -43,7 +43,7 @@ func (ru *RequireUser) RequireUserMiddleWare(next http.HandlerFunc) http.Handler
 			next(w, r)
 			return
 		}
-		http.Redirect(w, r, "/login", http.StatusFound)
+		http.Redirect(w, r, "/", http.StatusFound)
 	}
 }
 

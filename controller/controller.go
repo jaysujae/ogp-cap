@@ -11,8 +11,7 @@ import (
 
 // Controller defines the shape of the static struct
 type Controller struct {
-	HomeView  *views.Views
-	GroupView *views.Views
+	HomeView *views.Views
 
 	us          models.UserService
 	chatService models.ChatService
@@ -26,8 +25,7 @@ type commentForm struct {
 // New returns the static struct
 func New(us models.UserService, ps models.ChatService, cs models.CommentService) *Controller {
 	return &Controller{
-		HomeView:  views.NewView("bootstrap", "static/home", "user/signup"),
-		GroupView: views.NewView("bootstrap", "user/group"),
+		HomeView: views.NewView("bootstrap", "static/home", "user/signup"),
 
 		us:          us,
 		chatService: ps,
@@ -63,15 +61,40 @@ func (c *Controller) Home(w http.ResponseWriter, r *http.Request) {
 	c.HomeView.Render(w, r, data)
 }
 
-// Group shows a group of people similar to the user
-func (c *Controller) Group(w http.ResponseWriter, r *http.Request) {
-	userID := appcontext.GetUserFromContext(r).ID
-	users, err := c.us.GetGroupUsersByID(userID)
+// UserPage shows user's chats
+func (c *Controller) UserPage(w http.ResponseWriter, r *http.Request) {
+	user := appcontext.GetUserFromContext(r)
+	if user == nil {
+		c.HomeView.Render(w, r, nil)
+		return
+	}
+	userID := user.ID
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		return
+	}
+	uID := uint(idInt)
+	chats, err := c.chatService.FindByUserID(uID)
 	if err != nil {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	c.GroupView.Render(w, r, users)
+	companions, err := c.us.GetGroupUsersByID(userID)
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+	data := struct {
+		Chats      *[]models.Chat
+		Companions *[]models.User
+	}{
+		Chats:      chats,
+		Companions: companions,
+	}
+	c.HomeView.Render(w, r, data)
 }
 
 // Comment handles commenting on a chat
