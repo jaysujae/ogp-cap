@@ -71,178 +71,179 @@
         </div>
 
         <div class="col-md-6 col-lg-7 col-xl-7">
-          <ul class="list-unstyled text-white">
+          <ul
+            class="list-unstyled text-white"
+            style="height: 60vh; overflow-x: hidden; overflow-y: auto"
+          >
             {{ range .Yield.Chats }} {{ if eq .Role "user" }}
-            <div style="height: 60vh; overflow-x: hidden; overflow-y: auto">
-              <li class="d-flex justify-content mb-4">
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                  alt="avatar"
-                  class="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                  width="60"
-                />
+            <li class="d-flex justify-content mb-4">
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                alt="avatar"
+                class="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
+                width="60"
+              />
 
-                <div class="card mask-custom">
-                  <div
-                    class="card-header d-flex justify-content-between p-3"
-                    style="border-bottom: 1px solid rgba(255, 255, 255, 0.3)"
-                  >
-                    <p class="fw-bold mb-0">{{ .User.Nickname }}</p>
-                    <p class="text-light small mb-0">
-                      <i class="far fa-clock"></i> 12 mins ago
-                    </p>
-                  </div>
-                  <div class="card-body">
-                    <p class="mb-0">{{ .Content }}</p>
-                    <div class="d-flex justify-content-center row">
-                      <div class="col-md-8">
-                        <div class="d-flex flex-column comment-section">
-                          {{ range .Comments }}
+              <div class="card mask-custom">
+                <div
+                  class="card-header d-flex justify-content-between p-3"
+                  style="border-bottom: 1px solid rgba(255, 255, 255, 0.3)"
+                >
+                  <p class="fw-bold mb-0">{{ .User.Nickname }}</p>
+                  <p class="text-light small mb-0">
+                    <i class="far fa-clock"></i> 12 mins ago
+                  </p>
+                </div>
+                <div class="card-body">
+                  <p class="mb-0">{{ .Content }}</p>
+                  <div class="d-flex justify-content-center row">
+                    <div class="col-md-8">
+                      <div class="d-flex flex-column comment-section">
+                        {{ range .Comments }}
+                        <div class="p-2">
+                          <div class="d-flex flex-row user-info">
+                            <img
+                              class="rounded-circle"
+                              src="https://i.imgur.com/RpzrMR2.jpg"
+                              width="40"
+                            />
+                            <div
+                              class="d-flex flex-column justify-content-start ml-2"
+                            >
+                              <span class="d-block font-weight-bold name"
+                                >Marry Andrews</span
+                              >
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <p class="comment-text">{{ .Content }}</p>
+                          </div>
+                        </div>
+                        {{ end }}
+
+                        <form action="/comment/{{ .ID }}" method="post">
                           <div class="p-2">
-                            <div class="d-flex flex-row user-info">
+                            <div class="d-flex flex-row align-items-start">
                               <img
                                 class="rounded-circle"
                                 src="https://i.imgur.com/RpzrMR2.jpg"
                                 width="40"
                               />
-                              <div
-                                class="d-flex flex-column justify-content-start ml-2"
-                              >
-                                <span class="d-block font-weight-bold name"
-                                  >Marry Andrews</span
-                                >
-                              </div>
+                              <textarea
+                                name="content"
+                                class="form-control ml-1 shadow-none textarea"
+                              ></textarea>
                             </div>
-                            <div class="mt-2">
-                              <p class="comment-text">{{ .Content }}</p>
+                            <div class="mt-2 text-right">
+                              <button
+                                class="btn btn-primary btn-sm shadow-none"
+                                type="submit"
+                              >
+                                Post comment
+                              </button>
                             </div>
                           </div>
-                          {{ end }}
-
-                          <form action="/comment/{{ .ID }}" method="post">
-                            <div class="p-2">
-                              <div class="d-flex flex-row align-items-start">
-                                <img
-                                  class="rounded-circle"
-                                  src="https://i.imgur.com/RpzrMR2.jpg"
-                                  width="40"
-                                />
-                                <textarea
-                                  name="content"
-                                  class="form-control ml-1 shadow-none textarea"
-                                ></textarea>
-                              </div>
-                              <div class="mt-2 text-right">
-                                <button
-                                  class="btn btn-primary btn-sm shadow-none"
-                                  type="submit"
-                                >
-                                  Post comment
-                                </button>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
+                        </form>
                       </div>
                     </div>
                   </div>
                 </div>
-              </li>
-              {{ else }}
-              <li class="d-flex justify-content mb-4">
-                <div class="card mask-custom w-100">
-                  <div
-                    class="card-header d-flex justify-content-between p-3"
-                    style="border-bottom: 1px solid rgba(255, 255, 255, 0.3)"
-                  >
-                    <p class="fw-bold mb-0">ChatLah</p>
-                    <p class="text-light small mb-0">
-                      <i class="far fa-clock"></i> 13 mins ago
-                    </p>
-                  </div>
-                  <div class="card-body">
-                    <p class="mb-0">{{ .Content }}</p>
-                    <div class="d-flex justify-content-center row">
-                      <div class="col-md-8">
-                        <div class="d-flex flex-column comment-section">
-                          {{ range .Comments }}
+              </div>
+            </li>
+            {{ else }}
+            <li class="d-flex justify-content mb-4">
+              <div class="card mask-custom w-100">
+                <div
+                  class="card-header d-flex justify-content-between p-3"
+                  style="border-bottom: 1px solid rgba(255, 255, 255, 0.3)"
+                >
+                  <p class="fw-bold mb-0">ChatLah</p>
+                  <p class="text-light small mb-0">
+                    <i class="far fa-clock"></i> 13 mins ago
+                  </p>
+                </div>
+                <div class="card-body">
+                  <p class="mb-0">{{ .Content }}</p>
+                  <div class="d-flex justify-content-center row">
+                    <div class="col-md-8">
+                      <div class="d-flex flex-column comment-section">
+                        {{ range .Comments }}
+                        <div class="p-2">
+                          <div class="d-flex flex-row user-info">
+                            <img
+                              class="rounded-circle"
+                              src="https://i.imgur.com/RpzrMR2.jpg"
+                              width="40"
+                            />
+                            <div
+                              class="d-flex flex-column justify-content-start ml-2"
+                            >
+                              <span class="d-block font-weight-bold name"
+                                >Marry Andrews</span
+                              >
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <p class="comment-text">{{ .Content }}</p>
+                          </div>
+                        </div>
+                        {{ end }}
+
+                        <form action="/comment/{{ .ID }}" method="post">
                           <div class="p-2">
-                            <div class="d-flex flex-row user-info">
+                            <div class="d-flex flex-row align-items-start">
                               <img
                                 class="rounded-circle"
                                 src="https://i.imgur.com/RpzrMR2.jpg"
                                 width="40"
                               />
-                              <div
-                                class="d-flex flex-column justify-content-start ml-2"
-                              >
-                                <span class="d-block font-weight-bold name"
-                                  >Marry Andrews</span
-                                >
-                              </div>
+                              <textarea
+                                name="content"
+                                class="form-control ml-1 shadow-none textarea"
+                              ></textarea>
                             </div>
-                            <div class="mt-2">
-                              <p class="comment-text">{{ .Content }}</p>
+                            <div class="mt-2 text-right">
+                              <button
+                                class="btn btn-primary btn-sm shadow-none"
+                                type="submit"
+                              >
+                                Post comment
+                              </button>
                             </div>
                           </div>
-                          {{ end }}
-
-                          <form action="/comment/{{ .ID }}" method="post">
-                            <div class="p-2">
-                              <div class="d-flex flex-row align-items-start">
-                                <img
-                                  class="rounded-circle"
-                                  src="https://i.imgur.com/RpzrMR2.jpg"
-                                  width="40"
-                                />
-                                <textarea
-                                  name="content"
-                                  class="form-control ml-1 shadow-none textarea"
-                                ></textarea>
-                              </div>
-                              <div class="mt-2 text-right">
-                                <button
-                                  class="btn btn-primary btn-sm shadow-none"
-                                  type="submit"
-                                >
-                                  Post comment
-                                </button>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
+                        </form>
                       </div>
                     </div>
                   </div>
                 </div>
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
-                  alt="avatar"
-                  class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
-                  width="60"
-                />
-              </li>
-              {{ end }} {{ end }}
-            </div>
-            <form action="/post" method="post">
-              <li class="mb-3">
-                <div class="form-outline form-white">
-                  <textarea
-                    name="post"
-                    class="form-control"
-                    id="textAreaExample3"
-                    rows="4"
-                  ></textarea>
-                </div>
-              </li>
-              <button
-                type="submit"
-                class="btn btn-light btn-lg btn-rounded float-end"
-              >
-                Send
-              </button>
-            </form>
+              </div>
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+                alt="avatar"
+                class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
+                width="60"
+              />
+            </li>
+            {{ end }} {{ end }}
           </ul>
+          <form action="/post" method="post">
+            <li class="mb-3">
+              <div class="form-outline form-white">
+                <textarea
+                  name="post"
+                  class="form-control"
+                  id="textAreaExample3"
+                  rows="4"
+                ></textarea>
+              </div>
+            </li>
+            <button
+              type="submit"
+              class="btn btn-light btn-lg btn-rounded float-end"
+            >
+              Send
+            </button>
+          </form>
         </div>
       </div>
     </div>
