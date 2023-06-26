@@ -45,6 +45,7 @@ func main() {
 
 	r.HandleFunc("/user/{id}", requireUserMW.RequireUserMiddleWare(defaultController.UserPage)).Methods("GET")
 	r.HandleFunc("/comment/{id}", requireUserMW.RequireUserMiddleWare(defaultController.Comment)).Methods("POST")
+	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
 
 	fmt.Printf("Listening at port %s", serverPort)
 	_ = http.ListenAndServe(":"+serverPort, userMW.UserMiddleWareFn(r))
