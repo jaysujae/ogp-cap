@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 	"hackathon/controller"
 	"hackathon/middleware"
 	"hackathon/models"
 	"net/http"
+	"os"
 )
 
 const (
@@ -20,9 +22,8 @@ const (
 )
 
 func main() {
-
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+	godotenv.Load()
+	psqlInfo := os.Getenv("DATABASE_URL")
 
 	svc, err := models.NewServices(psqlInfo)
 	requireUserMW := middleware.NewRequireUser(svc.User)

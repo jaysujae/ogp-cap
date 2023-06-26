@@ -3,7 +3,6 @@ package controller
 import (
 	"context"
 	"github.com/PullRequestInc/go-gpt3"
-	"github.com/joho/godotenv"
 	appcontext "hackathon/context"
 	"hackathon/models"
 	"hackathon/views"
@@ -95,7 +94,6 @@ func (p *Post) HandlePost(w http.ResponseWriter, r *http.Request) {
 }
 
 func chatGPT(posts *[]models.Chat) *models.Chat {
-	godotenv.Load()
 
 	apiKey := os.Getenv("API_KEY")
 	if apiKey == "" {
