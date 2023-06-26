@@ -43,7 +43,7 @@ func main() {
 	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(postC.HandlePost)).Methods("POST")
 	r.HandleFunc("/delete/{id}", requireUserMW.RequireUserMiddleWare(postC.HandleDelete)).Methods("POST")
 
-	r.HandleFunc("/user/{id}", requireUserMW.RequireUserMiddleWare(postC.ListPage)).Methods("GET")
+	r.HandleFunc("/user/{id}", requireUserMW.RequireUserMiddleWare(defaultController.UserPage)).Methods("GET")
 	r.HandleFunc("/comment/{id}", requireUserMW.RequireUserMiddleWare(defaultController.Comment)).Methods("POST")
 
 	fmt.Printf("Listening at port %s", serverPort)

@@ -62,6 +62,7 @@ func (p *Post) ListPage(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
+
 	p.ListView.Render(w, r, posts)
 }
 
