@@ -77,12 +77,14 @@ func main() {
 		// Replace this with your actual function.
 		line, err := getStdinLine()
 		if err != nil {
+			fmt.Println("std error")
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		var result Result
 		if err := json.Unmarshal([]byte(line), &result); err != nil {
+			fmt.Println("result error")
 			http.Error(w, fmt.Sprintf("Could not parse JSON: %v", err), http.StatusBadRequest)
 			return
 		}
