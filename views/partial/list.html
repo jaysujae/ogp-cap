@@ -62,12 +62,12 @@
               <ul class="list-unstyled text-white">
                 {{ range .Yield.Chats }}
                 {{ if eq .Role "user" }}
-                <li class="d-flex justify-content-between mb-4">
+                <li class="d-flex justify-content mb-4">
                   <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
                     class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
 
                   <div class="card mask-custom">
-                    <div class="card-header d-flex justify-content p-3"
+                    <div class="card-header d-flex justify-content-between p-3"
                       style="border-bottom: 1px solid rgba(255,255,255,.3);">
                       <p class="fw-bold mb-0">{{ .User.Nickname }}</p>
                       <p class="text-light small mb-0"><i class="far fa-clock"></i> 12 mins ago</p>
