@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -10,7 +9,6 @@ import (
 	"hackathon/controller"
 	"hackathon/middleware"
 	"hackathon/models"
-	"io/ioutil"
 	"net/http"
 	"os"
 )
@@ -62,40 +60,6 @@ func main() {
 
 	r.HandleFunc("/user/{id}", requireUserMW.RequireUserMiddleWare(postC.ListPage)).Methods("GET")
 	r.HandleFunc("/comment/{id}", requireUserMW.RequireUserMiddleWare(defaultController.Comment)).Methods("POST")
-
-	r.HandleFunc("/refresh", func(w http.ResponseWriter, r *http.Request) {
-		bodyBytes, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		bodyString := string(bodyBytes)
-		signature := r.Header.Get("Signature")
-		fmt.Println("repl.deploy" + bodyString + signature)
-
-		// Assuming getStdinLine() reads a JSON string from Stdin and returns it.
-		// Replace this with your actual function.
-		line, err := getStdinLine()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		var result Result
-		if err := json.Unmarshal([]byte(line), &result); err != nil {
-			http.Error(w, fmt.Sprintf("Could not parse JSON: %v", err), http.StatusBadRequest)
-			return
-		}
-
-		w.WriteHeader(result.Status)
-		_, err = w.Write([]byte(result.Body))
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		fmt.Println("repl.deploy-success")
-	})
 
 	fmt.Printf("Listening at port %s", serverPort)
 	_ = http.ListenAndServe(":"+serverPort, userMW.UserMiddleWareFn(r))
