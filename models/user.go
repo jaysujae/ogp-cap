@@ -11,7 +11,9 @@ type User struct {
 	gorm.Model
 	Nickname     string
 	Introduction string `gorm:"not null"`
+	Image        string
 	Chats        []Chat
+	Comments     []Comment
 }
 
 // UserDB defines all methods of the user service
@@ -72,20 +74,21 @@ func (ug *userGorm) Create(user *User) error {
 		"Fit",
 	}
 	animals := []string{
+		"Bear",
+		"Deer",
+		"Donkey",
+		"Elephant",
+		"Fox",
+		"Monkey",
 		"Panda",
-		"Merlion",
-		"Lion",
-		"Dolphin",
-		"Peacock",
-		"Eagle",
-		"Koala",
-		"Tiger",
-		"Flamingo",
-		"Giraffe",
+		"Rabbit",
+		"Squirrel",
+		"Zebra",
 	}
 	adjRand := rand.Intn(10)
 	nameRand := rand.Intn(10)
 	user.Nickname = adjectives[adjRand] + " " + animals[nameRand]
+	user.Image = animals[nameRand] + ".jpg"
 	return ug.db.Create(&user).Error
 }
 

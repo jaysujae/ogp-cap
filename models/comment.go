@@ -8,6 +8,7 @@ import (
 type Comment struct {
 	gorm.Model
 	UserID  uint   `gorm:"not null"`
+	User    User   `gorm:"foreignKey:UserID"`
 	ChatID  uint   `gorm:"not null"`
 	Content string `gorm:"not null"`
 }

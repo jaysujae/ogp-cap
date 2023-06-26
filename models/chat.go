@@ -107,7 +107,7 @@ func (pg *postGorm) Create(post *Chat) error {
 
 func (pg *postGorm) FindByUserID(id uint) (*[]Chat, error) {
 	var chats []Chat
-	result := pg.db.Preload("Comments").Preload("User").Where("user_id = ?", id).Find(&chats)
+	result := pg.db.Preload("Comments.User").Preload("User").Where("user_id = ?", id).Find(&chats)
 
 	if result.Error != nil {
 		return nil, result.Error

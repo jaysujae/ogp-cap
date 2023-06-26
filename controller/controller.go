@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	appcontext "hackathon/context"
 	"hackathon/models"
@@ -51,12 +52,15 @@ func (c *Controller) Home(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
+	fmt.Println(user.Image)
 	data := struct {
 		Chats      *[]models.Chat
 		Companions *[]models.User
+		Current    *models.User
 	}{
 		Chats:      chats,
 		Companions: companions,
+		Current:    user,
 	}
 	c.HomeView.Render(w, r, data)
 }
@@ -90,9 +94,11 @@ func (c *Controller) UserPage(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Chats      *[]models.Chat
 		Companions *[]models.User
+		Current    *models.User
 	}{
 		Chats:      chats,
 		Companions: companions,
+		Current:    user,
 	}
 	c.HomeView.Render(w, r, data)
 }
