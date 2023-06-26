@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -15,7 +14,6 @@ type Services struct {
 
 // NewServices returns the services struct
 func NewServices(connectionString string) (*Services, error) {
-	fmt.Println(connectionString)
 	db, err := gorm.Open("postgres", connectionString)
 	if err != nil {
 		return nil, err
