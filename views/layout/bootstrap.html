@@ -28,6 +28,10 @@
     }
 </style>
 <body>
+
+    {{ if .User }}
+    {{ template "nav" . }}
+    {{ end }}
     {{ if .Alert }}
     {{ template "alert" .Alert }}
     {{ end }}

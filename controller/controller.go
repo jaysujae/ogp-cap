@@ -149,12 +149,13 @@ type signUpForm struct {
 
 // LogOut handles the /logout GET
 func (c *Controller) LogOut(w http.ResponseWriter, r *http.Request) {
+	userID := appcontext.GetUserFromContext(r).ID
+	c.userService.Delete(userID)
 	cookie := &http.Cookie{
 		Name:  middleware.BrowserCookieName,
 		Value: "",
 	}
 	http.SetCookie(w, cookie)
-
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 

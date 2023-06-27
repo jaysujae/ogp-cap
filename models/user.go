@@ -21,6 +21,7 @@ type UserService interface {
 	Create(user *User) error
 	ByID(token string) (*User, error)
 	GetGroupUsersByID(id uint) (*[]User, error)
+	Delete(id uint) error
 }
 
 type UserGorm struct {
@@ -78,4 +79,13 @@ func (ug *UserGorm) ByID(id string) (*User, error) {
 		return nil, errors.New("not found")
 	}
 	return user, nil
+}
+
+func (ug *UserGorm) Delete(id uint) error {
+	user := &User{}
+	if err := ug.db.First(user, "id = ?", id).Error; err != nil {
+		errors.New("not found")
+	}
+	ug.db.Delete(&user) // Delete the user
+	return nil
 }
