@@ -58,13 +58,15 @@ func (c *Controller) Home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := struct {
-		Chats   *[]models.Chat
-		Mates   *[]models.User
-		Current *models.User
+		Chats    *[]models.Chat
+		Mates    *[]models.User
+		Current  *models.User
+		CanReply bool
 	}{
-		Chats:   chats,
-		Mates:   mates,
-		Current: user,
+		Chats:    chats,
+		Mates:    mates,
+		Current:  user,
+		CanReply: true,
 	}
 	c.HomeView.Render(w, r, data)
 }
@@ -96,13 +98,18 @@ func (c *Controller) UserPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := struct {
-		Chats   *[]models.Chat
-		Mates   *[]models.User
-		Current *models.User
+		Chats    *[]models.Chat
+		Mates    *[]models.User
+		Current  *models.User
+		CanReply bool
 	}{
-		Chats:   chats,
-		Mates:   mates,
-		Current: user,
+		Chats:    chats,
+		Mates:    mates,
+		Current:  user,
+		CanReply: false,
+	}
+	if userID == uID {
+		data.CanReply = true
 	}
 	c.HomeView.Render(w, r, data)
 }

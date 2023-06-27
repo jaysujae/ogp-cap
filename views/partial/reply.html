@@ -1,0 +1,20 @@
+{{ define "reply" }}
+<form action="/post" method="post">
+    <li class="mb-3">
+        <div class="form-outline form-white">
+                <textarea
+                        name="post"
+                        class="form-control"
+                        id="textAreaExample3"
+                        rows="4"
+                ></textarea>
+        </div>
+    </li>
+    <button
+            class="btn btn-primary btn-sm shadow-none"
+            type="submit"
+    >
+        Reply back to ChatLah
+    </button>
+</form>
+{{ end }}
