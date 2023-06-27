@@ -1,6 +1,9 @@
 package models
 
 import (
+	"context"
+	"errors"
+	"github.com/PullRequestInc/go-gpt3"
 	"github.com/jinzhu/gorm"
 )
 
@@ -48,20 +51,22 @@ func NewCommentService(db *gorm.DB) CommentService {
 }
 
 func (pg *commentGorm) Create(comment *Comment) error {
-	err := pg.db.Create(comment).Error
+	resp, err := Client.Moderation(context.TODO(), gpt3.ModerationRequest{
+		Input: comment.Content,
+		Model: "text-moderation-latest",
+	})
+	if err != nil {
+		return err
+	}
+	if len(resp.Results) == 0 {
+		return errors.New("nil resp")
+	}
+	if resp.Results[0].Flagged {
+		return errors.New("violent")
+	}
+	err = pg.db.Create(comment).Error
 	if err != nil {
 		return err
 	}
 	return nil
 }
-
-/*
-func (pg *commentGorm) FindByUserID(id uint) (*[]Chat, error) {
-	posts := &[]Chat{}
-	if err := pg.db.Find(posts, "user_id = ?", id).Error; err != nil {
-		return nil, err
-	}
-	return posts, nil
-}
-
-*/

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/PullRequestInc/go-gpt3"
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
@@ -16,6 +17,10 @@ const serverPort = "3000"
 
 func main() {
 	godotenv.Load()
+
+	apiKey := os.Getenv("API_KEY")
+	models.Client = gpt3.NewClient(apiKey)
+
 	psqlInfo := os.Getenv("DATABASE_URL")
 
 	svc, err := models.NewServices(psqlInfo)

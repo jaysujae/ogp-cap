@@ -11,7 +11,6 @@ import (
 	"hackathon/views"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 )
 
@@ -205,14 +204,14 @@ func (c *Controller) HandlePost(w http.ResponseWriter, r *http.Request) {
 	form := &postForm{}
 	ParseForm(r, form)
 	userID := appcontext.GetUserFromContext(r).ID
-	post := &models.Chat{
+	chat := &models.Chat{
 		UserID:  userID,
 		Content: form.Post,
 		Role:    "user",
 	}
 
-	if err := c.chatService.Create(post); err != nil {
-		http.Redirect(w, r, "/post", http.StatusFound)
+	if err := c.chatService.Create(chat); err != nil {
+		http.Redirect(w, r, "/?erorr=1", http.StatusFound)
 		return
 	}
 	posts, err := c.chatService.FindByUserID(userID)
@@ -230,13 +229,7 @@ func (c *Controller) HandlePost(w http.ResponseWriter, r *http.Request) {
 
 func chatGPT(posts *[]models.Chat) *models.Chat {
 
-	apiKey := os.Getenv("API_KEY")
-	if apiKey == "" {
-		log.Fatalln("Missing API KEY")
-	}
-
 	ctx := context.Background()
-	client := gpt3.NewClient(apiKey)
 
 	messages := []gpt3.ChatCompletionRequestMessage{
 		{
@@ -251,7 +244,7 @@ func chatGPT(posts *[]models.Chat) *models.Chat {
 		})
 	}
 
-	resp, err := client.ChatCompletion(ctx, gpt3.ChatCompletionRequest{
+	resp, err := models.Client.ChatCompletion(ctx, gpt3.ChatCompletionRequest{
 		Model:    "gpt-3.5-turbo",
 		Messages: messages,
 	})

@@ -1,7 +1,9 @@
 package models
 
 import (
+	"context"
 	"errors"
+	"github.com/PullRequestInc/go-gpt3"
 	"github.com/jinzhu/gorm"
 )
 
@@ -94,8 +96,26 @@ func (pv *postVal) checkID(post *Chat) error {
 	return nil
 }
 
+var Client gpt3.Client
+
+func (pv *postVal) checkModeration(post *Chat) error {
+	resp, err := Client.Moderation(context.TODO(), gpt3.ModerationRequest{
+		Input: post.Content,
+	})
+	if err != nil {
+		return err
+	}
+	if len(resp.Results) == 0 {
+		return errors.New("nil resp")
+	}
+	if resp.Results[0].Flagged {
+		return errors.New("violent")
+	}
+	return nil
+}
+
 func (pv *postVal) Create(post *Chat) error {
-	if err := runPostValFns(post); err != nil {
+	if err := runPostValFns(post, pv.checkForPost, pv.checkModeration); err != nil {
 		return err
 	}
 	return pv.postDB.Create(post)
