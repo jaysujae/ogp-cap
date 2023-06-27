@@ -29,24 +29,19 @@ func main() {
 	// reset db
 	svc.DestroyAndCreate()
 
-	defaultController := controller.New(svc.User, svc.Chat, svc.Comment)
-	userC := controller.NewUser(svc.User, svc.Chat)
-	postC := controller.NewPost(svc.Chat)
+	defaultController := controller.New(svc)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", defaultController.Home)
-
-	r.HandleFunc("/signup", userC.Register).Methods("POST")
-	r.HandleFunc("/logout", userC.LogOut).Methods("GET")
-
-	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(postC.HandlePost)).Methods("POST")
-	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(postC.HandlePost)).Methods("POST")
-	r.HandleFunc("/delete/{id}", requireUserMW.RequireUserMiddleWare(postC.HandleDelete)).Methods("POST")
-
 	r.HandleFunc("/user/{id}", requireUserMW.RequireUserMiddleWare(defaultController.UserPage)).Methods("GET")
 	r.HandleFunc("/comment/{id}", requireUserMW.RequireUserMiddleWare(defaultController.Comment)).Methods("POST")
-	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
 
+	r.HandleFunc("/signup", defaultController.Register).Methods("POST")
+	r.HandleFunc("/logout", defaultController.LogOut).Methods("GET")
+
+	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(defaultController.HandlePost)).Methods("POST")
+
+	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
 	fmt.Printf("Listening at port %s", serverPort)
 	_ = http.ListenAndServe(":"+serverPort, userMW.UserMiddleWareFn(r))
 }
