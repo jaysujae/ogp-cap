@@ -42,6 +42,9 @@ func (ug *UserGorm) GetGroupUsersByID(id uint) (*[]User, error) {
 }
 
 func (ug *UserGorm) Create(user *User) error {
+	if len(user.Introduction) < 10 {
+		return errors.New("Please write more than 10 letters.")
+	}
 	adjectives := []string{
 		"Happy",
 		"Bright",
