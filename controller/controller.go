@@ -9,7 +9,6 @@ import (
 	"hackathon/middleware"
 	"hackathon/models"
 	"hackathon/views"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -181,12 +180,22 @@ func (c *Controller) Register(w http.ResponseWriter, r *http.Request) {
 			Role:    "user",
 		},
 	}
-	_ = c.chatService.Create(&models.Chat{
+	err := c.chatService.Create(&models.Chat{
 		UserID:  user.ID,
 		Content: user.Introduction,
 		Role:    "user",
 	})
-	_ = c.chatService.Create(chatGPT(&chats))
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
+	gptResp, err := chatGPT(&chats)
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
+	err = c.chatService.Create(gptResp)
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
 	cookie := &http.Cookie{
 		Name:  middleware.BrowserCookieName,
 		Value: fmt.Sprint(user.ID),
@@ -219,7 +228,11 @@ func (c *Controller) HandlePost(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	chatGPTResponse := chatGPT(posts)
+	chatGPTResponse, err := chatGPT(posts)
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
 	if err := c.chatService.Create(chatGPTResponse); err != nil {
 		http.Redirect(w, r, "/post", http.StatusFound)
 		return
@@ -227,7 +240,7 @@ func (c *Controller) HandlePost(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func chatGPT(posts *[]models.Chat) *models.Chat {
+func chatGPT(posts *[]models.Chat) (*models.Chat, error) {
 
 	ctx := context.Background()
 
@@ -249,12 +262,12 @@ func chatGPT(posts *[]models.Chat) *models.Chat {
 		Messages: messages,
 	})
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 
 	return &models.Chat{
 		UserID:  (*posts)[0].UserID,
 		Content: resp.Choices[0].Message.Content,
 		Role:    "assistant",
-	}
+	}, nil
 }
