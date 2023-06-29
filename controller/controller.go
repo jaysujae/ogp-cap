@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/PullRequestInc/go-gpt3"
 	"github.com/gorilla/mux"
@@ -263,6 +264,9 @@ func chatGPT(posts *[]models.Chat) (*models.Chat, error) {
 	})
 	if err != nil {
 		return nil, err
+	}
+	if len(*posts) == 0 || len(resp.Choices) == 0 {
+		return nil, errors.New("error")
 	}
 
 	return &models.Chat{

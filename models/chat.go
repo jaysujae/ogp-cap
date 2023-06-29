@@ -115,6 +115,9 @@ func (pv *postVal) checkModeration(post *Chat) error {
 }
 
 func (pv *postVal) Create(post *Chat) error {
+	if post == nil {
+		return errors.New("error")
+	}
 	if err := runPostValFns(post, pv.checkForPost, pv.checkModeration); err != nil {
 		return err
 	}
