@@ -51,10 +51,13 @@
                     </div>
                 </div>
 
-                <form action="/signup" method="post">
+                <form action="/signup" method="post" id="myForm">
                     <div class="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
                         <textarea type="text" class="form-control form-control-lg" name="introduction" placeholder="I feel..."></textarea>
-                        <div class="text-center"><button class="btn-primary btn-block" type="submit" style="background: #2487ce;
+                        <div class="text-center"><button
+                                id="submitBtn"
+                                onclick="submitForm()"
+                                class="btn-primary btn-block" type="submit" style="background: #2487ce;
                         border: 0;
                         padding: 10px 30px;
                         color: #fff;
