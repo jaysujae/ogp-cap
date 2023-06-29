@@ -34,19 +34,14 @@
         {{ template "mates" .}}
 
         <div class="col-md-6 col-lg-7 col-xl-7">
-          <ul
-            class="list-unstyled text-white"
-            style="height: 60vh; overflow-x: hidden; overflow-y: auto"
-          >
-            {{ range .Yield.Chats }} {{ if eq .Role "user" }}
+          <div class="pt-3 pe-3" style="height: 60vh; overflow-x: hidden; overflow-y: auto">
+            {{ range .Yield.Chats }}
             {{ template "user_chat" .}}
-            {{ else }}
-            {{ template "gpt_chat" .}}
-            {{ end }} {{ end }}
-            {{ if .Yield.CanReply }}
-            {{ template "reply" .}}
             {{ end }}
-          </ul>
+          </div>
+          {{ if .Yield.CanReply }}
+          {{ template "reply" .}}
+          {{ end }}
         </div>
       </div>
     </div>

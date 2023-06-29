@@ -1,20 +1,14 @@
 {{ define "reply" }}
-<form action="/post" method="post">
-    <li class="mb-3">
-        <div class="form-outline form-white">
-                <textarea
-                        name="post"
-                        class="form-control"
-                        id="textAreaExample3"
-                        rows="4"
-                ></textarea>
-        </div>
-    </li>
-    <button
-            class="btn btn-primary btn-sm shadow-none"
-            type="submit"
-    >
-        Reply back to ChatLah
-    </button>
+<form action="/post" method="post" role="form">
+<div class="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
+    <img src="/assets/{{ .Yield.Current.Image }}" alt="avatar 3" style="width: 40px; height: 100%;">
+        <input type="text" class="form-control form-control-lg" name="post" placeholder="Type message">
+        <div class="text-center"><button class="btn-primary btn-block" type="submit" style="background: #2487ce;
+                        border: 0;
+                        padding: 10px 30px;
+                        color: #fff;
+                        transition: 0.4s;
+                        border-radius: 4px;">Chat</button></div>
+</div>
 </form>
 {{ end }}

@@ -1,67 +1,52 @@
 {{ define "user_chat" }}
-<li class="d-flex justify-content mb-4">
-    <div class="card mask-custom">
-        <div
-                class="card-header d-flex justify-content-between p-3"
-                style="border-bottom: 1px solid rgba(255, 255, 255, 0.3)"
-        >
-            <img
-                    src="/assets/{{ .User.Image }}"
-                    alt="avatar"
-                    class="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                    width="60"
-            />
-            <p class="fw-bold mb-0">{{ .User.Nickname }}</p>
-        </div>
-        <div class="card-body">
-            <p class="mb-0">{{ .Content }}</p>
-            <div class="d-flex justify-content-center row">
-                <div class="col-md-8">
+<div class="d-flex flex-row justify-content-start">
+    <img
+
+            {{ if eq .Role "user" }}
+            src="/assets/{{ .User.Image }}"
+            {{ else }}
+            src="/assets/gpt.jpg"
+            {{ end }}
+            alt="avatar"
+            class="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
+            width="45px"
+    />
+    <div>
+        <div class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">{{ .Content }}
+            <div class="d-flex row">
+                <div class="col-md-12">
                     <div class="d-flex flex-column comment-section">
                         {{ range .Comments }}
                         <div class="p-2">
-                            <div class="d-flex flex-row user-info">
+                            <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">
                                 <img
                                         class="rounded-circle"
                                         src="/assets/{{ .User.Image }}"
-                                        width="40"
+                                        width="24"
+                                        height="24"
                                 />
-                                <div
-                                        class="d-flex flex-column justify-content-start ml-2"
-                                >
-                              <span class="d-block font-weight-bold name"
-                              >{{ .User.Nickname }}</span
-                              >
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <p class="comment-text">{{ .Content }}</p>
-                            </div>
+                                {{ .Content }}
+                            </p>
                         </div>
                         {{ end }}
 
+                        {{ if eq .Role "user" }}
                         <form action="/comment/{{ .ID }}" method="post">
-                            <div class="p-2">
-                                <div class="d-flex flex-row align-items-start">
-                                    <textarea
-                                            name="content"
-                                            class="form-control ml-1 shadow-none textarea"
-                                    ></textarea>
-                                </div>
-                                <div class="mt-2 text-right">
-                                    <button
-                                            class="btn btn-primary btn-sm shadow-none"
-                                            type="submit"
-                                    >
-                                        Leave a comment
-                                    </button>
-                                </div>
+                            <div class="d-flex flex-row align-items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"></path>
+                                </svg>
+                                <textarea name="content" class="form-control ml-1 shadow-none textarea"></textarea>
+                                <button class="btn btn-primary btn-sm shadow-none" type="submit">Comment</button>
                             </div>
                         </form>
+                        {{ end }}
                     </div>
                 </div>
             </div>
+
         </div>
+
     </div>
-</li>
+</div>
 {{ end }}
