@@ -32,7 +32,7 @@ func main() {
 	defer svc.Close()
 	svc.AutoMigrate()
 	// reset db
-	svc.DestroyAndCreate()
+	// svc.DestroyAndCreate()
 
 	defaultController := controller.New(svc)
 
