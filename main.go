@@ -42,7 +42,7 @@ func main() {
 	r.HandleFunc("/comment/{id}", requireUserMW.RequireUserMiddleWare(defaultController.Comment)).Methods("POST")
 
 	r.HandleFunc("/signup", defaultController.Register).Methods("POST")
-	r.HandleFunc("/logout", defaultController.LogOut).Methods("GET")
+	r.HandleFunc("/logout", requireUserMW.RequireUserMiddleWare(defaultController.LogOut)).Methods("GET")
 
 	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(defaultController.HandlePost)).Methods("POST")
 
