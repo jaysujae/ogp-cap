@@ -32,7 +32,7 @@
                         </div>
                         {{ end }}
 
-                        {{ if eq .Role "user" }}
+                        {{ if .CanComment }}
                         <form action="/comment/{{ .ID }}" method="post">
                             <div class="d-flex flex-row align-items-start">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">

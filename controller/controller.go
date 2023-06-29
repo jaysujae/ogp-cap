@@ -38,6 +38,18 @@ func New(services *models.Services) *Controller {
 	}
 }
 
+type ViewChat struct {
+	models.Chat
+	CanComment bool
+}
+
+type RenderData struct {
+	Chats    *[]ViewChat
+	Mates    *[]models.User
+	Current  *models.User
+	CanReply bool
+}
+
 // Home handles the / GET
 func (c *Controller) Home(w http.ResponseWriter, r *http.Request) {
 	user := appcontext.GetUserFromContext(r)
@@ -56,13 +68,22 @@ func (c *Controller) Home(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	data := struct {
-		Chats    *[]models.Chat
-		Mates    *[]models.User
-		Current  *models.User
-		CanReply bool
-	}{
-		Chats:    chats,
+	var viewChats []ViewChat
+	for _, chat := range *chats {
+		canComment := true
+		if chat.Role != "user" {
+			canComment = false
+		}
+		if chat.UserID == userID {
+			canComment = false
+		}
+		viewChats = append(viewChats, ViewChat{
+			Chat:       chat,
+			CanComment: canComment,
+		})
+	}
+	data := RenderData{
+		Chats:    &viewChats,
 		Mates:    mates,
 		Current:  user,
 		CanReply: true,
@@ -96,13 +117,22 @@ func (c *Controller) UserPage(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	data := struct {
-		Chats    *[]models.Chat
-		Mates    *[]models.User
-		Current  *models.User
-		CanReply bool
-	}{
-		Chats:    chats,
+	var viewChats []ViewChat
+	for _, chat := range *chats {
+		canComment := true
+		if chat.Role != "user" {
+			canComment = false
+		}
+		if chat.UserID == userID {
+			canComment = false
+		}
+		viewChats = append(viewChats, ViewChat{
+			Chat:       chat,
+			CanComment: canComment,
+		})
+	}
+	data := RenderData{
+		Chats:    &viewChats,
 		Mates:    mates,
 		Current:  user,
 		CanReply: false,

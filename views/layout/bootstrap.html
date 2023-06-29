@@ -34,6 +34,16 @@
 
         window.scrollTo(0, document.body.scrollHeight);
     };
+    function submitForm() {
+        let submitBtn = document.getElementById('submitBtn');
+        // Disable the button immediately when it's clicked
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Answering...";
+
+        // Then submit the form
+        document.getElementById('myForm').submit();
+    }
+
 </script>
 
 <body>
