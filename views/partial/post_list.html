@@ -34,7 +34,7 @@
         {{ template "mates" .}}
 
         <div class="col-md-6 col-lg-7 col-xl-7">
-          <div class="pt-3 pe-3" style="height: 60vh; overflow-x: hidden; overflow-y: auto">
+          <div id="myDiv" class="pt-3 pe-3" style="height: 60vh; overflow-x: hidden; overflow-y: auto">
             {{ range .Yield.Chats }}
             {{ template "user_chat" .}}
             {{ end }}

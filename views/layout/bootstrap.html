@@ -27,6 +27,15 @@
         background: linear-gradient(149deg, #8EB9D1 0%, #FFE5FF 100%);
     }
 </style>
+<script type="text/javascript">
+    window.onload = function() {
+        var div = document.getElementById("myDiv");
+        div.scrollTop = div.scrollHeight;
+
+        window.scrollTo(0, document.body.scrollHeight);
+    };
+</script>
+
 <body>
 
     {{ if .User }}
