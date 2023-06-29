@@ -19,12 +19,14 @@
                         {{ range .Comments }}
                         <div class="p-2">
                             <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">
+                                <a href="/user/{{ .User.ID }}">
                                 <img
                                         class="rounded-circle"
                                         src="/assets/{{ .User.Image }}"
                                         width="24"
                                         height="24"
                                 />
+                                </a>
                                 {{ .Content }}
                             </p>
                         </div>
